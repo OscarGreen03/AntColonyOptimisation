@@ -58,42 +58,24 @@ class AntColony(graph_generation.Graph):
         choice = random.uniform(0, cumulative_weights[-1])
         index = np.searchsorted(cumulative_weights, choice)
         return valid_edges[index]'''
-
-
-
-
         '''
         sum_weight = sum([current_edges[edge] for edge in valid_edges])
         choice = random.uniform(0, sum_weight)
         c = 0
         for edge in valid_edges:
-
             c = c + current_edges[edge]
             if c >= choice:
-                return edge
-        
+                return edge       
         raise Exception("No Node Found")
         '''
 
     def produce_path(self):
-
-        current_edges = {}
-        visited_edges = {}
         current_node = "START"
         path = ["START"]
-        # if "START" in self.graph.keys():
-        #    current_edges = self.graph["START"]
-        #    print("Current Edges: " + str(current_edges))
-        # else:
-        #   print("START not found??")
-        #   print("Graph Keys: " + str(self.graph.keys()))
-
         while current_node != "END":
             next_step = self.get_next_step(current_node)
             path.append(next_step)
             current_node = next_step
-        # print("Path Completed")
-
         return path
 
     def evaluate_fitness(self, path, items, bin_count):
@@ -149,26 +131,11 @@ def BPP(bin_count, items, population=10, max_generations=50, e=0.8):
             colony.update_pheremones(path[0], fitness[0])
             if fitness[0] < best_fitness:
                 best_path, best_fitness = path[0], fitness[0]
-        # for path in paths:
-        # print(path)
-        # for path in paths:
-        #    if path[1] < best_fitness:
-        #        best_path, best_fitness = path[0], path[1]
-        #    colony.update_pheremones(path[0], path[1], weighting=1,global_weight=1)
 
         colony.evaporate(e)
-        #path_history.append(colony.as_nx_graph())
-        # colony.visualise_graph(i)
         if i % 100 == 0:
             print(i)
 
-    # colony.visualise_graph(show=True)
-    # print(colony.graph)
-    # print(paths[-1])
-    # print("Best path is: " + str(best_path))
-    # print("Fitness: " + str(best_fitness))
-    #colony.visualise_graph_with_path(best_path, show=True)
-    # graph_generation.produce_animation(path_history)
     return best_path, best_fitness
 
 
