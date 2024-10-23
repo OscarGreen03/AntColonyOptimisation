@@ -2,6 +2,7 @@ from multiprocessing import Pool
 from random import uniform
 from bisect import bisect_left
 import numpy as np
+from time import time
 from tabulate import tabulate
 class AntColony:
     def __init__(self):
@@ -10,7 +11,7 @@ class AntColony:
         self.bin_count = 0
         self.item_count = 0
 
-    def evaporate(self, e=0.9):
+    def evaporate(self, e):
         self.graph *= e
         self.start *= e
 
@@ -144,6 +145,7 @@ def BPP(bin_count, items, iterations, p, e, colony=None):
 #BPP(10, [20, 30, 40, 30, 20, 10, 20, 30, 14, 64, 12, 34, 23, 63, 36, 28], 1000, 100, 0.9)
 
 if __name__ == '__main__':
+    start_time = time()
     tests = [
         (100, 0.9),
         (100, 0.6),
@@ -153,7 +155,7 @@ if __name__ == '__main__':
     items_1 = list(range(1, 501))
     items_2 = [(i ** 2) / 2 for i in range(1, 501)]
 
-    for bin_count in [10, 50]:
+    for bin_count, item_list in [[10, items_1],[50, items_2]]:
         for test in tests:
             print("------------------")
             print(f"p = {test[0]}" + " " * (4 - len(str(test[0]))) + f"with e = {test[1]}")
@@ -166,28 +168,11 @@ if __name__ == '__main__':
             for i in range(5):
                 print(f"{i + 1}", end="")
 
-                results.append(BPP(bin_count, items_1, iterations, test[0], test[1], colony=None))
+                results.append(BPP(bin_count, item_list, iterations, test[0], test[1], colony=None))
 
             print(f"\nResults b={bin_count}, p={test[0]}, e={test[1]}")
             for result in results:
                 print(result)
             print("------------------")
-
-
-
-    for test in tests:
-        print("------------------")
-        print(f"p = {test[0]}" + " " * (4 - len(str(test[0]))) + f"with e = {test[1]}")
-
-        iterations = 10000//test[0]
-
-        best_fitness, best_path  = BPP(10, items_1, iterations, test[0], test[1])
-        # print("Best path is: " + str(best_path))
-        print("Fitness: " + str(best_fitness))
-
-    for test in tests:
-        print("------------------")
-        print(f"p = {test[0]}" + " " * (4 - len(str(test[0]))) + f"with e = {test[1]}")
-        best_fitness, best_path = BPP(10, items_2, 10000, test[0], test[1])
-        # print("Best path is: " + str(best_path))
-        print("Fitness: " + str(best_fitness))
+    end_time = time()
+    print(f'Time spent solving: {end_time-start_time}')
