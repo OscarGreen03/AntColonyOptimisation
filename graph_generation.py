@@ -11,7 +11,7 @@ class Graph:
 
     def print_max_min_weights(self):
         maximum = 0
-        minimum = float(9999999)
+        minimum = float('inf')
         for node in self.graph.keys():
             for edge in self.graph[node].keys():
                 weight = self.graph[node][edge]
@@ -55,7 +55,7 @@ class Graph:
 
 
         self.graph[n1][n2] = weight
-        self.graph[n2][n1] = weight
+        #self.graph[n2][n1] = weight
 
     def get_nodes(self):
         return self.graph.keys()

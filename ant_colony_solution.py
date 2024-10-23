@@ -9,6 +9,7 @@ import matplotlib.pyplot as plt
 class AntColony(graph_generation.Graph):
     def __init__(self):
         super().__init__()
+        self.valid_edges_cache = {}
 
     def evaporate(self, rate):
         for node in self.graph:
@@ -30,13 +31,18 @@ class AntColony(graph_generation.Graph):
             edge_list.remove("START")
         if node == "START":
             node = (-1, -1,)
-        valid_edges = [edge for edge in edge_list if isinstance(edge, tuple) and (edge[1] > node[1])]
+
+        if node in self.valid_edges_cache.keys():
+            valid_edges = self.valid_edges_cache[node]
+        else:
+            valid_edges = [edge for edge in edge_list if isinstance(edge, tuple) and (edge[1] > node[1])]
+            self.valid_edges_cache[node] = valid_edges
         ## all edges where is a tuple and item (index 1) is larger than the previous item
         ## this means it can only move foward
 
 
 
-        '''weights = [current_edges[edge] for edge in valid_edges]
+        weights = [current_edges[edge] for edge in valid_edges]
         cum_weights = []
         total = 0
         for weight in weights:
@@ -44,15 +50,14 @@ class AntColony(graph_generation.Graph):
             cum_weights.append(total)
         choice = random.uniform(0, cum_weights[-1])
         index = bisect_left(cum_weights, choice)
-        return valid_edges[index]'''
+        return valid_edges[index]
 
-
-        #Is this faster??
+        '''#Is this faster??
         weights = np.array([current_edges[edge] for edge in valid_edges])
         cumulative_weights = np.cumsum(weights)
         choice = random.uniform(0, cumulative_weights[-1])
         index = np.searchsorted(cumulative_weights, choice)
-        return valid_edges[index]
+        return valid_edges[index]'''
 
 
 
