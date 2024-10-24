@@ -9,18 +9,18 @@ class AntColony:
         self.bin_count = 0
         self.item_count = 0
 
+
     def evaporate(self, e):
         self.graph *= e
         self.start *= e
+
 
     def set_bin_graph(self, bin_count, item_count):
         self.graph = np.random.rand(item_count, bin_count, bin_count)
         self.start = np.random.rand(bin_count)
         self.bin_count = bin_count
         self.item_count = item_count
-        # self.graph = [[] for _ in range(item_count)]
-        # for i in range(len(self.graph)):
-        #    self.graph[i] = [np.random.rand(bin_count) for _ in range(bin_count)]
+
 
     def get_next_step(self, current_item, current_bin):
         if current_bin == "START":
